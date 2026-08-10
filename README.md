@@ -7,10 +7,6 @@
 
 ## Sobre o Projeto
 
-As primeiras 48 horas de um desaparecimento são as mais cruciais para um desfecho positivo. Atualmente, a comunicação depende muito de redes sociais e carece de segmentação geográfica rápida.
-
-## Sobre o Projeto
-
 As primeiras 48 horas de um desaparecimento são as mais cruciais para um desfecho positivo. Atualmente, a comunicação depende muito de redes sociais e carece de segmentação geográfica rápida. 
 
 O **SpotLight** é uma plataforma colaborativa focada em centralizar alertas de desaparecimento. O sistema notifica cidadãos que estejam próximos ao local do último avistamento, criando uma rede de buscas ágil e integrada para auxiliar as autoridades e as famílias. 
