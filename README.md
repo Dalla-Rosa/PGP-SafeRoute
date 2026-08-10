@@ -35,7 +35,7 @@ Este repositório foi criado e estruturado para cumprir as métricas da **Sprint
 ## Equipe
 
 * **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
-* **[Jonathan Götz Correa ]** - [Desenvolvedor]
+* **[Jonathan Götz Correa]** - Desenvolvedor
 
 ## Licença
 
