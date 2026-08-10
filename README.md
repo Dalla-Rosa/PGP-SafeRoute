@@ -9,7 +9,7 @@
 
 As primeiras 48 horas de um desaparecimento são as mais cruciais para um desfecho positivo. Atualmente, a comunicação depende muito de redes sociais e carece de segmentação geográfica rápida. 
 
-O **SpotLink** (nome provisório) é uma plataforma colaborativa focada em centralizar alertas de desaparecimento. O sistema notifica cidadãos que estejam próximos ao local do último avistamento, criando uma rede de buscas ágil e integrada para auxiliar as autoridades e as famílias.
+O **SpotLight** (nome provisório) é uma plataforma colaborativa focada em centralizar alertas de desaparecimento. O sistema notifica cidadãos que estejam próximos ao local do último avistamento, criando uma rede de buscas ágil e integrada para auxiliar as autoridades e as famílias.
 
 ## Entregas da Sprint 0 - Planejamento
 
@@ -34,9 +34,8 @@ Este repositório foi criado e estruturado para cumprir as métricas da **Sprint
 
 ## Equipe
 
-* **[Seu Nome]** - Desenvolvedor 
-* **[Nome do Integrante]** - [Função]
-* **[Nome do Integrante]** - [Função]
+* **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
+* **[Jonathan Götz Correa ]** - [Desenvolvedor]
 
 ## Licença
 
