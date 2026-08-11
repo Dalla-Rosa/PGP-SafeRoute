@@ -26,18 +26,18 @@ Além da emissão de alertas geolocalizados, a plataforma utiliza inteligência 
 - **[US03]** Como usuário, quero fazer login seguro e gerenciar minha senha.
 
 ### Gestão e Mural de Alertas
-- [ ] **[US04]** Como autoridade, quero cadastrar um novo alerta de desaparecimento com foto, características físicas, roupas e local do último avistamento.
-- [ ] **[US05]** Como usuário comum, quero visualizar um "Mural" com a lista de pessoas desaparecidas ativas na minha região (ex: Chapecó).
-- [ ] **[US06]** Como autoridade, quero poder encerrar um alerta quando o caso for resolvido.
+- **[US04]** Como autoridade, quero cadastrar um novo alerta de desaparecimento com foto, características físicas, roupas e local do último avistamento.
+- **[US05]** Como usuário comum, quero visualizar um "Mural" com a lista de pessoas desaparecidas ativas na minha região (ex: Chapecó).
+- **[US06]** Como autoridade, quero poder encerrar um alerta quando o caso for resolvido.
 
 ### Geolocalização e Inteligência Espacial
-- [ ] **[US07]** Como sistema, quero capturar a localização atual (background) do usuário comum para saber se ele está em uma área de interesse.
-- [ ] **[US08]** Como sistema, quero disparar uma notificação push para todos os celulares num raio de "X" km do último avistamento.
-- [ ] **[US09]** Como autoridade, quero visualizar um mapa de calor e projeções de círculos geográficos baseados no tempo desde o desaparecimento.
+- **[US07]** Como sistema, quero capturar a localização atual (background) do usuário comum para saber se ele está em uma área de interesse.
+- **[US08]** Como sistema, quero disparar uma notificação push para todos os celulares num raio de "X" km do último avistamento.
+- **[US09]** Como autoridade, quero visualizar um mapa de calor e projeções de círculos geográficos baseados no tempo desde o desaparecimento.
 
 ### Interação e Reporte de Pistas
-- [ ] **[US10]** Como cidadão, quero um botão de "Reportar Pista" no alerta para enviar uma foto, minha localização atual e um texto descritivo.
-- [ ] **[US11]** Como autoridade, quero receber e visualizar as pistas enviadas pelos cidadãos atreladas a um caso específico.
+- **[US10]** Como cidadão, quero um botão de "Reportar Pista" no alerta para enviar uma foto, minha localização atual e um texto descritivo.
+- **[US11]** Como autoridade, quero receber e visualizar as pistas enviadas pelos cidadãos atreladas a um caso específico.
 
 ## Tecnologias 
 
