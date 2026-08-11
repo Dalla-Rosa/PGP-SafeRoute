@@ -21,7 +21,7 @@ O problema central que este projeto busca solucionar é a dificuldade de visuali
 * Desenvolver um mapa de calor (heatmap) que evidencie as áreas e regiões com maior incidência de desaparecimentos;
 * Implementar um sistema de anotações geolocalizadas, permitindo a visualização de detalhes contextuais (ex: vestimentas, horário, idade, características físicas) diretamente na interface do mapa;
 * Projetar uma ferramenta acessível e intuitiva que possa auxiliar tanto autoridades policiais quanto organizações não governamentais (ONGs) na identificação de padrões espaço-temporais.
-* 
+
 ## Canvas 
 
 | Bloco | Descrição |
