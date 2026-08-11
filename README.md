@@ -21,13 +21,13 @@ Além da emissão de alertas geolocalizados, a plataforma utiliza inteligência 
 ## Product Backlog (Lista de Requisitos)
 
 ### Gestão de Identidade e Segurança
-- **[US01]** Como usuário comum, quero me cadastrar usando meu CPF e e-mail para acessar a plataforma.
+- **[US01]** Como usuário, quero me cadastrar usando meu CPF e e-mail para acessar a plataforma.
 - **[US02]** Como sistema, quero validar a identidade de autoridades para liberar o perfil de "Gestor de Alertas".
 - **[US03]** Como usuário, quero fazer login seguro e gerenciar minha senha.
 
 ### Gestão e Mural de Alertas
 - **[US04]** Como autoridade, quero cadastrar um novo alerta de desaparecimento com foto, características físicas, roupas e local do último avistamento.
-- **[US05]** Como usuário comum, quero visualizar um "Mural" com a lista de pessoas desaparecidas ativas na minha região (ex: Chapecó).
+- **[US05]** Como usuário, quero visualizar um "Mural" com a lista de pessoas desaparecidas ativas na minha região (ex: Chapecó).
 - **[US06]** Como autoridade, quero poder encerrar um alerta quando o caso for resolvido.
 
 ### Geolocalização e Inteligência Espacial
@@ -36,7 +36,7 @@ Além da emissão de alertas geolocalizados, a plataforma utiliza inteligência 
 - **[US09]** Como autoridade, quero visualizar um mapa de calor e projeções de círculos geográficos baseados no tempo desde o desaparecimento.
 
 ### Interação e Reporte de Pistas
-- **[US10]** Como cidadão, quero um botão de "Reportar Pista" no alerta para enviar uma foto, minha localização atual e um texto descritivo.
+- **[US10]** Como usuário, quero um botão de "Reportar Pista" no alerta para enviar uma foto, minha localização atual e um texto descritivo.
 - **[US11]** Como autoridade, quero receber e visualizar as pistas enviadas pelos cidadãos atreladas a um caso específico.
 
 ## Tecnologias 
