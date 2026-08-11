@@ -11,13 +11,6 @@ Visando criar soluções para problemas de segurança pública idealizamos o Spo
 
 A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos recentes. Com base no local onde a pessoa sumiu, o sistema desenha círculos de busca no mapa e emite alertas diretamente para os celulares de quem está naquela região. Isso ajuda a criar uma rede de apoio local rápida e orienta as autoridades sobre onde focar as buscas.
 
-## Backlog e Funcionalidades Previstas
-
-* **Gestão de Identidade:** Cadastro de usuários sejam cidadãos ou autoridades governamentais.
-* **Mural de Alertas:** Exibição em tempo real de pessoas desaparecidas na região do usuário (ex: Chapecó e arredores).
-* **Notificações Georreferenciadas:** Alertas disparados para celulares em um raio específico (ex: 10km) do último avistamento.
-* **Reporte de Pistas:** Botão rápido para envio de fotos, localização ou descrições diretamente para os responsáveis.
-
 ## Product Backlog (Lista de Requisitos)
 
 ### Gestão de Identidade e Segurança
