@@ -11,6 +11,8 @@ Visando criar soluções para problemas de segurança pública idealizamos o Spo
 
 A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos recentes. Com base no local onde a pessoa sumiu, o sistema desenha círculos de busca no mapa e emite alertas diretamente para os celulares de quem está naquela região. Isso ajuda a criar uma rede de apoio local rápida e orienta as autoridades sobre onde focar as buscas.
 
+# Sprint 0
+
 ## Canvas 
 
 | Bloco | Descrição |
