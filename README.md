@@ -37,3 +37,5 @@ Constam na aba Projects do repositório: https://github.com/users/Dalla-Rosa/pro
 ## Artigo
 [PGP_SpotLight_Sprint_0.pdf](https://github.com/user-attachments/files/30951016/PGP_SpotLight_Sprint_0.pdf)
 
+Overleaf: https://www.overleaf.com/project/6a7b5f0b6dbb7bc869c75906
+
