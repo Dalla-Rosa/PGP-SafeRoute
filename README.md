@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)]()
 
-> **Projeto Acadêmico - UFFS | Segurança Pública (Pessoas Desaparecidas)**
+> **Planejamento e Gestão de Projetos - UFFS | Segurança Pública (Pessoas Desaparecidas)**
 
 ## Sobre o Projeto
 
