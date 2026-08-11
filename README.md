@@ -11,17 +11,6 @@ Visando criar soluções para problemas de segurança pública idealizamos o Spo
 
 A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos recentes. Com base no local onde a pessoa sumiu, o sistema desenha círculos de busca no mapa e emite alertas diretamente para os celulares de quem está naquela região. Isso ajuda a criar uma rede de apoio local rápida e orienta as autoridades sobre onde focar as buscas.
 
-### O Problema
-Apesar da existência de bases de dados abertas sobre segurança pública, a análise geoespacial de pessoas desaparecidas ainda é um desafio no cenário brasileiro. Os dados, quando abertos, são frequentemente disponibilizados em formatos tabulares extensos, o que dificulta a percepção rápida de padrões geográficos, concentrações de casos e correlações espaciais pelas autoridades competentes e pela própria sociedade civil.
-
-O problema central que este projeto busca solucionar é a dificuldade de visualização, cruzamento e interpretação de dados contextuais sobre desaparecimentos em regiões específicas. Sem uma ferramenta visual adequada que consolide o local do desaparecimento com detalhes cruciais — como as características físicas da vítima, roupas usadas no momento do desaparecimento e horário da ocorrência —, o processo de investigação e as campanhas de busca tornam-se menos eficientes.
-
-### Objetivos Principais
-* Coletar, estruturar e realizar a limpeza (data cleaning) de datasets públicos governamentais referentes a pessoas desaparecidas;
-* Desenvolver um mapa de calor (heatmap) que evidencie as áreas e regiões com maior incidência de desaparecimentos;
-* Implementar um sistema de anotações geolocalizadas, permitindo a visualização de detalhes contextuais (ex: vestimentas, horário, idade, características físicas) diretamente na interface do mapa;
-* Projetar uma ferramenta acessível e intuitiva que possa auxiliar tanto autoridades policiais quanto organizações não governamentais (ONGs) na identificação de padrões espaço-temporais.
-
 ## Canvas 
 
 | Bloco | Descrição |
