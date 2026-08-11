@@ -42,3 +42,7 @@ O problema central que este projeto busca solucionar é a dificuldade de visuali
 
 * **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
 * **[Jonathan Götz Correa]** - Desenvolvedor
+
+## Kanban
+
+https://docs.google.com/spreadsheets/d/16SAFkT1mg5VknmOqVeDeVs_EMeBe3QjW5tAeiFiFGcg/edit?usp=sharing
