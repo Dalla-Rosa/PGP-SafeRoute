@@ -3,6 +3,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)]()
 
+## Equipe
+
+* **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
+* **[Jonathan Götz Correa]** - Desenvolvedor
+
 > **Planejamento e Gestão de Projetos - UFFS | Segurança Pública (Pessoas Desaparecidas)**
 
 ## Sobre o Projeto
@@ -24,15 +29,6 @@ A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos re
 | **Premissas e Restrições** | Os dados da polícia precisam estar acessíveis; O usuário precisa estar com o GPS do celular ativo.<br>**Restrições:** A ferramenta é um apoio, não substitui a investigação oficial; Deve respeitar a privacidade (LGPD). |
 | **Riscos** | Baixa adesão inicial da população da cidade ao aplicativo.<br>Lentidão ou falha na atualização dos dados públicos por parte da polícia.<br> Envio de pistas falsas por usuários mal-intencionados. |
 | **Equipe** | Bernardo Flores Dalla Rosa (Desenvolvedor) e Jonathan Götz Correa (Desenvolvedor). |
-
-## Tecnologias 
-
-*(A arquitetura será definida nas próximas Sprints)*
-
-## Equipe
-
-* **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
-* **[Jonathan Götz Correa]** - Desenvolvedor
 
 ## Kanban
 
