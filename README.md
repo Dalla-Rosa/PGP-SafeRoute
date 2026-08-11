@@ -32,7 +32,7 @@ A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos re
 
 ## Kanban e Backlog
 
-Constam na aba Projects do repositório: https://github.com/users/Dalla-Rosa/projects/1, já estão inseridos dentro do Kanban.
+Constam na aba Projects do repositório: https://github.com/users/Dalla-Rosa/projects/1, Backlogs já estão inseridos dentro do Kanban.
 
 ## Artigo
 [PGP_SpotLight_Sprint_0.pdf](https://github.com/user-attachments/files/30951016/PGP_SpotLight_Sprint_0.pdf)
