@@ -21,9 +21,9 @@ Além da emissão de alertas geolocalizados, a plataforma utiliza inteligência 
 ## Product Backlog (Lista de Requisitos)
 
 ### Gestão de Identidade e Segurança
-- [ ] **[US01]** Como usuário comum, quero me cadastrar usando meu CPF e e-mail para acessar a plataforma.
-- [ ] **[US02]** Como sistema, quero validar a identidade de autoridades (via e-mail institucional ou matrícula) para liberar o perfil de "Gestor de Alertas".
-- [ ] **[US03]** Como usuário, quero fazer login seguro e gerenciar minha senha.
+- **[US01]** Como usuário comum, quero me cadastrar usando meu CPF e e-mail para acessar a plataforma.
+- **[US02]** Como sistema, quero validar a identidade de autoridades para liberar o perfil de "Gestor de Alertas".
+- **[US03]** Como usuário, quero fazer login seguro e gerenciar minha senha.
 
 ### Gestão e Mural de Alertas
 - [ ] **[US04]** Como autoridade, quero cadastrar um novo alerta de desaparecimento com foto, características físicas, roupas e local do último avistamento.
