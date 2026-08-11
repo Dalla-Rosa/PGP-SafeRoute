@@ -30,6 +30,6 @@ A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos re
 | **Riscos** | Baixa adesão inicial da população da cidade ao aplicativo.<br>Lentidão ou falha na atualização dos dados públicos por parte da polícia.<br> Envio de pistas falsas por usuários mal-intencionados. |
 | **Equipe** | Bernardo Flores Dalla Rosa (Desenvolvedor) e Jonathan Götz Correa (Desenvolvedor). |
 
-## Kanban
+## Kanban e Backlog
 
-Consta na aba Projects do repositório: https://github.com/users/Dalla-Rosa/projects/1
+Constam na aba Projects do repositório: https://github.com/users/Dalla-Rosa/projects/1, já estão inseridos dentro do Kanban.
