@@ -3,11 +3,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)]()
 
-## Equipe
-
-* **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
-* **[Jonathan Götz Correa]** - Desenvolvedor
-
 > **Planejamento e Gestão de Projetos - UFFS | Segurança Pública (Pessoas Desaparecidas)**
 
 ## Sobre o Projeto
@@ -15,6 +10,11 @@
 Visando criar soluções para problemas de segurança pública idealizamos o SpotLight como uma ferramenta que auxilia autoridades competentes na busca por pessoas desaparecidas. 
 
 A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos recentes. Com base no local onde a pessoa sumiu, o sistema desenha círculos de busca no mapa e emite alertas diretamente para os celulares de quem está naquela região. Isso ajuda a criar uma rede de apoio local rápida e orienta as autoridades sobre onde focar as buscas.
+
+## Equipe
+
+* **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 
+* **[Jonathan Götz Correa]** - Desenvolvedor
 
 # Sprint 0
 
