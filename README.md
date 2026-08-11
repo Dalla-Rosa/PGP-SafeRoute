@@ -35,7 +35,7 @@ A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos re
 | **Público-Alvo** |  Autoridades de Segurança Pública (que precisam direcionar as buscas).<br>2. Cidadãos da região (que recebem os alertas e formam a rede de apoio). |
 | **Entregas** | Integração com os dados públicos da polícia.<br> Mapa com círculos demarcando o raio de busca a partir do último local conhecido.<br> Disparo de notificações para usuários dentro desse raio.<br> Botão rápido para cidadãos enviarem pistas (foto e local) para a polícia. |
 | **Premissas e Restrições** | Os dados da polícia precisam estar acessíveis; O usuário precisa estar com o GPS do celular ativo.<br>**Restrições:** A ferramenta é um apoio, não substitui a investigação oficial; Deve respeitar a privacidade (LGPD). |
-| **Riscos** |  Baixa adesão inicial da população da cidade ao aplicativo.<br>Lentidão ou falha na atualização dos dados públicos por parte da polícia.<br>- Envio de pistas falsas por usuários mal-intencionados. |
+| **Riscos** |  Baixa adesão inicial da população da cidade ao aplicativo.<br>Lentidão ou falha na atualização dos dados públicos por parte da polícia.<br> Envio de pistas falsas por usuários mal-intencionados. |
 | **Equipe** | Bernardo Flores Dalla Rosa (Desenvolvedor) e Jonathan Götz Correa (Desenvolvedor). |
 
 ## Tecnologias 
