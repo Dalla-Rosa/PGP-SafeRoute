@@ -32,4 +32,4 @@ A ferramenta utiliza dados públicos da polícia para mapear desaparecimentos re
 
 ## Kanban
 
-https://docs.google.com/spreadsheets/d/16SAFkT1mg5VknmOqVeDeVs_EMeBe3QjW5tAeiFiFGcg/edit?usp=sharing
+Consta na aba Projects do repositório: https://github.com/users/Dalla-Rosa/projects/1
