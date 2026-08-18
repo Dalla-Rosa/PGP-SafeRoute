@@ -43,3 +43,6 @@ Overleaf: https://www.overleaf.com/project/6a7b5f0b6dbb7bc869c75906
 
 ## Database 
 https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-prf
+
+## Notebook
+https://colab.research.google.com/drive/1WwlQfI0iXWQVytxACnqdf2SUvmlSmN63?usp=sharing
