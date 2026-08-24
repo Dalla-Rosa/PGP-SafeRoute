@@ -11,7 +11,7 @@ O SafeRoute é uma ferramenta de conscientização voltada para motoristas que p
 
 Ao informar uma rota, o usuário poderá visualizar os trechos da rodovia classificados de acordo com o nível de risco estimado. O mapa utilizará diferentes cores para destacar as áreas que demandam maior atenção. Além disso, ao selecionar um trecho específico, o sistema apresentará informações relevantes sobre os acidentes registrados na região, como quantidade de ocorrências, gravidade, principais causas, condições meteorológicas e períodos de maior ocorrência.
 
-O objetivo não é prever acidentes de forma absoluta, mas fornecer informações que auxiliem na conscientização dos motoristas e na adoção de uma condução mais cautelosa em trechos historicamente mais críticos.
+O objetivo é fornecer informações que auxiliem na conscientização dos motoristas e na adoção de uma condução mais cautelosa em trechos historicamente mais críticos.
 
 ## Equipe
 
