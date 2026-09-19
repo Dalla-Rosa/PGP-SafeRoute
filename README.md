@@ -50,3 +50,8 @@ https://colab.research.google.com/drive/1WwlQfI0iXWQVytxACnqdf2SUvmlSmN63?usp=sh
 
 # Sprint 2
 
+## Notebook (Sprint 2)
+https://colab.research.google.com/drive/1WwlQfI0iXWQVytxACnqdf2SUvmlSmN63?usp=sharing
+
+## Artigo (Sprint 2)
+Overleaf: https://www.overleaf.com/project/6a7b5f0b6dbb7bc869c75906
