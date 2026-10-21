@@ -13,6 +13,47 @@ Ao informar uma rota, o usuário poderá visualizar os trechos da rodovia classi
 
 O objetivo é fornecer informações que auxiliem na conscientização dos motoristas e na adoção de uma condução mais cautelosa em trechos historicamente mais críticos.
 
+## Como rodar
+
+O projeto tem duas partes, que precisam estar **as duas no ar**: o backend (`backend/`, Python + FastAPI, serve o modelo) e o frontend (`frontend/`, React + Vite). Abra um terminal para cada.
+
+### Primeira vez
+
+```powershell
+# backend
+cd backend
+py -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# frontend
+cd ..\frontend
+npm install
+```
+
+O backend precisa dos arquivos exportados pelo notebook em `backend/modelo/`:
+`saferoute_modelo.joblib` e `saferoute_trechos.csv`.
+
+### No dia a dia
+
+```powershell
+# terminal 1 — backend em http://127.0.0.1:8000
+cd backend
+.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+```
+
+```powershell
+# terminal 2 — frontend em http://localhost:5173
+cd frontend
+npm run dev
+```
+
+Abra <http://localhost:5173>. Se aparecer "Não conseguimos falar com o servidor do
+SafeRoute", é o backend que não está rodando — confira o terminal 1 ou abra
+<http://127.0.0.1:8000/api/saude>, que deve responder um JSON.
+
+Detalhes do backend (endpoints, variáveis de ambiente, como trocar o modelo) em
+[backend/README.md](backend/README.md).
+
 ## Equipe
 
 * **[Bernardo Flores Dalla Rosa]** - Desenvolvedor 

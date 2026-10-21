@@ -1,28 +1,38 @@
 import { useState } from 'react'
 
 export const ROTAS_DEMO = [
+  { origem: 'Chapecó, SC', destino: 'Florianópolis, SC' },
   { origem: 'São Paulo, SP', destino: 'Curitiba, PR' },
   { origem: 'São Paulo, SP', destino: 'Rio de Janeiro, RJ' },
   { origem: 'Florianópolis, SC', destino: 'Porto Alegre, RS' },
-  { origem: 'Chapecó, SC', destino: 'Porto Alegre, RS' },
   { origem: 'Belo Horizonte, MG', destino: 'Rio de Janeiro, RJ' },
 ]
 
 const curto = (s) => s.split(',')[0]
 
+// Formato aceito por <input type="datetime-local">, no fuso do navegador.
+function agoraLocal() {
+  const agora = new Date()
+  agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset())
+  return agora.toISOString().slice(0, 16)
+}
+
 export default function FormRota({ onTracar, carregando }) {
   const [origem, setOrigem] = useState('')
   const [destino, setDestino] = useState('')
+  const [partida, setPartida] = useState(agoraLocal)
+
+  const preenchido = origem.trim() && destino.trim()
 
   function enviar(e) {
     e.preventDefault()
-    if (origem.trim() && destino.trim()) onTracar(origem.trim(), destino.trim())
+    if (preenchido) onTracar(origem.trim(), destino.trim(), partida)
   }
 
   function usarDemo(r) {
     setOrigem(r.origem)
     setDestino(r.destino)
-    onTracar(r.origem, r.destino)
+    onTracar(r.origem, r.destino, partida)
   }
 
   function inverter() {
@@ -47,7 +57,7 @@ export default function FormRota({ onTracar, carregando }) {
           <input
             value={destino}
             onChange={(e) => setDestino(e.target.value)}
-            placeholder="Destino (ex.: Porto Alegre, RS)"
+            placeholder="Destino (ex.: Florianópolis, SC)"
             aria-label="Destino"
           />
         </label>
@@ -55,7 +65,18 @@ export default function FormRota({ onTracar, carregando }) {
           ⇅
         </button>
       </div>
-      <button className="botao-principal" disabled={carregando || !origem.trim() || !destino.trim()}>
+
+      <label className="campo campo-horario">
+        <span className="rotulo-horario">Saída</span>
+        <input
+          type="datetime-local"
+          value={partida}
+          onChange={(e) => setPartida(e.target.value)}
+          aria-label="Horário de saída"
+        />
+      </label>
+
+      <button className="botao-principal" disabled={carregando || !preenchido}>
         {carregando ? 'Analisando rota…' : 'Ver riscos da rota'}
       </button>
       <div className="demos">

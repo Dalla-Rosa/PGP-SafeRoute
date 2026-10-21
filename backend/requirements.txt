@@ -1,0 +1,9 @@
+# A versão do scikit-learn precisa ser a mesma usada no treino (Colab):
+# o joblib do modelo só carrega com segurança na versão em que foi gerado.
+scikit-learn==1.6.1
+pandas>=2.2
+numpy>=1.26
+joblib>=1.4
+fastapi>=0.115
+uvicorn[standard]>=0.32
+httpx>=0.27

@@ -610,14 +610,183 @@ input:focus-visible {
   color: var(--texto-3);
 }
 
-.selo-demo {
-  display: inline-block;
-  margin: 0 6px 4px 0;
-  padding: 1px 7px;
-  border-radius: 4px;
-  background: #fef3c7;
-  color: #92400e;
+/* ---------- horário de saída ---------- */
+
+.campo-horario {
+  margin-top: 8px;
+  justify-content: space-between;
+}
+
+.rotulo-horario {
+  font-size: 13px;
   font-weight: 600;
+  color: var(--texto-2);
+}
+
+.campo-horario input {
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--texto);
+  text-align: right;
+  padding: 10px 0;
+}
+
+/* ---------- linha do tempo da viagem ---------- */
+
+.linha-tempo {
+  margin-top: 16px;
+}
+
+.regua-tempo {
+  position: relative;
+  height: 32px;
+  margin: 4px 22px 0;
+}
+
+.marco-fase {
+  position: absolute;
+  top: 0;
+  display: grid;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.marco-fase::before {
+  content: '';
+  width: 1px;
+  height: 5px;
+  margin: 0 auto 2px;
+  background: var(--borda);
+}
+
+.marco-hora {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.marco-fase-nome {
+  font-size: 10px;
+  color: var(--texto-3);
+}
+
+/* ---------- alertas de clima ---------- */
+
+.lista-alertas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--texto-3);
+}
+
+.lista-alertas button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  border-radius: var(--raio);
+  padding: 10px 12px;
+}
+
+.lista-alertas button:hover {
+  border-color: var(--texto-3);
+}
+
+.lista-alertas .alerta-forte {
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+
+.alerta-icone {
+  flex: none;
+  font-size: 18px;
+}
+
+.alerta {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-radius: var(--raio);
+  background: var(--fundo);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--texto-2);
+}
+
+.alerta.alerta-forte {
+  background: #fffbeb;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+}
+
+/* ---------- horário de passagem no trecho ---------- */
+
+.passagem {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: var(--raio);
+  background: var(--fundo);
+}
+
+.passagem-hora {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.passagem-detalhe {
+  font-size: 13px;
+  color: var(--texto-2);
+}
+
+/* ---------- frequência (separada da gravidade) ---------- */
+
+.frequencia {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+}
+
+.frequencia-alta {
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+
+.frequencia-valor {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.frequencia-texto {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--texto-2);
+}
+
+.nota-frequencia,
+.aviso {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: var(--raio);
+  background: var(--fundo);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--texto-2);
 }
 
 /* ---------- legenda do mapa ---------- */
