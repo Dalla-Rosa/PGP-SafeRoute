@@ -4,7 +4,7 @@ import Mapa from './components/Mapa'
 import ResumoRota from './components/ResumoRota'
 import DetalheTrecho from './components/DetalheTrecho'
 import Legenda from './components/Legenda'
-import { analisarRota, carregarTrechos, geocodificar } from './services/api'
+import { analisarRota, carregarTrechos } from './services/api'
 
 export default function App() {
   const [trechosGerais, setTrechosGerais] = useState([])
@@ -12,7 +12,9 @@ export default function App() {
   const [selecionado, setSelecionado] = useState(null)
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(null)
-  const conteudoRef = useRef(null)
+  const [mostrarClima, setMostrarClima] = useState(true)
+  const [painelAberto, setPainelAberto] = useState(true)
+  const painelRef = useRef(null)
 
   useEffect(() => {
     carregarTrechos()
@@ -26,20 +28,20 @@ export default function App() {
     return () => window.removeEventListener('keydown', aoTeclar)
   }, [])
 
-  // Leva o painel até o resultado ou detalhe recém-aberto (o formulário fica acima).
+  // No celular o painel é uma gaveta: abre sozinha quando há o que mostrar.
   useEffect(() => {
-    if (resultado || selecionado) conteudoRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    if (resultado || selecionado) {
+      setPainelAberto(true)
+      painelRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }, [resultado, selecionado])
 
-  async function onTracar(textoOrigem, textoDestino, partida) {
+  async function onTracar(origem, destino, partida) {
     setCarregando(true)
     setErro(null)
     setSelecionado(null)
     try {
-      // Nominatim pede no máximo 1 requisição por segundo: busca em sequência.
-      const origem = await geocodificar(textoOrigem)
-      const destino = await geocodificar(textoDestino)
-      const resposta = await analisarRota(origem.ponto, destino.ponto, new Date(partida).toISOString())
+      const resposta = await analisarRota(origem, destino, new Date(partida).toISOString())
       setResultado({ ...resposta, origem, destino })
     } catch (e) {
       setErro(e.message ?? 'Algo deu errado ao traçar a rota.')
@@ -53,20 +55,54 @@ export default function App() {
     setSelecionado(null)
   }
 
+  const temConteudo = resultado || selecionado
+
   return (
     <div className="app">
-      <aside className="painel">
-        <header className="marca">
-          <div className="logo" aria-hidden="true">
-            <img src="/favicon.svg" alt="" />
-          </div>
-          <div>
-            <h1>SafeRoute</h1>
-            <p>Conheça os trechos perigosos da sua rota antes de viajar</p>
-          </div>
-        </header>
+      <main className="area-mapa">
+        <Mapa
+          resultado={resultado}
+          trechosGerais={trechosGerais}
+          selecionado={selecionado}
+          onSelecionar={setSelecionado}
+          mostrarClima={mostrarClima}
+        />
 
-        <FormRota onTracar={onTracar} carregando={carregando} />
+        {resultado && (
+          <div className="controles-mapa">
+            <button
+              className={mostrarClima ? 'controle ativo' : 'controle'}
+              onClick={() => setMostrarClima((v) => !v)}
+              aria-pressed={mostrarClima}
+              title="Mostrar chuva e neblina previstas na rota"
+            >
+              <span aria-hidden="true">🌧️</span>
+              <span className="controle-texto">Clima</span>
+            </button>
+          </div>
+        )}
+
+        <Legenda comRota={!!resultado} />
+      </main>
+
+      <aside className={painelAberto ? 'painel' : 'painel recolhido'} ref={painelRef}>
+        <button
+          className="puxador"
+          onClick={() => setPainelAberto((v) => !v)}
+          aria-label={painelAberto ? 'Recolher painel' : 'Abrir painel'}
+        />
+
+        <div className="cartao-busca">
+          <header className="marca">
+            <img src="/favicon.svg" alt="" width="36" height="36" />
+            <div>
+              <h1>SafeRoute</h1>
+              <p>Os trechos perigosos da sua rota, antes de viajar</p>
+            </div>
+          </header>
+
+          <FormRota onTracar={onTracar} carregando={carregando} />
+        </div>
 
         {erro && (
           <div className="erro" role="alert">
@@ -74,7 +110,7 @@ export default function App() {
           </div>
         )}
 
-        <div className="conteudo" ref={conteudoRef}>
+        <div className="conteudo">
           {selecionado ? (
             <DetalheTrecho
               t={selecionado}
@@ -82,52 +118,33 @@ export default function App() {
               textoVoltar={resultado ? 'Voltar para a rota' : 'Voltar'}
             />
           ) : resultado ? (
-            <>
-              <ResumoRota
-                resultado={resultado}
-                origem={resultado.origem}
-                destino={resultado.destino}
-                onSelecionar={setSelecionado}
-              />
-              <button className="link" onClick={limparRota}>
-                Limpar rota e explorar o mapa
-              </button>
-            </>
+            <ResumoRota resultado={resultado} onSelecionar={setSelecionado} onLimpar={limparRota} />
           ) : (
             <section className="boas-vindas">
               <h3 className="titulo-secao">Como funciona</h3>
               <ol>
                 <li>Informe de onde sai, para onde vai e a que horas pretende sair.</li>
                 <li>
-                  Os trechos de rodovias federais da sua rota aparecem coloridos pelo risco{' '}
+                  Os trechos de rodovias federais aparecem coloridos pelo risco{' '}
                   <em>no horário em que você vai passar por cada um</em>.
                 </li>
-                <li>Toque em um trecho para ver o histórico de acidentes, o clima previsto e dicas de direção.</li>
+                <li>Toque em um trecho para ver histórico de acidentes, clima previsto e dicas.</li>
               </ol>
               <p className="sutil">
                 A cor indica a <strong>gravidade</strong> esperada dos acidentes, comparada ao restante da{' '}
-                <em>mesma</em> rodovia, com base em registros da Polícia Rodoviária Federal desde 2021. Você também
-                pode explorar os trechos direto no mapa.
+                <em>mesma</em> rodovia, com base em registros da Polícia Rodoviária Federal desde 2021.
               </p>
             </section>
           )}
         </div>
 
-        <footer className="rodape">
-          Ferramenta informativa de conscientização, baseada em dados históricos da PRF. Não substitui a atenção às
-          condições reais da via nem as orientações oficiais de trânsito.
-        </footer>
+        {!temConteudo && (
+          <footer className="rodape">
+            Ferramenta informativa de conscientização, baseada em dados históricos da PRF. Não substitui a atenção
+            às condições reais da via.
+          </footer>
+        )}
       </aside>
-
-      <main className="area-mapa">
-        <Mapa
-          resultado={resultado}
-          trechosGerais={trechosGerais}
-          selecionado={selecionado}
-          onSelecionar={setSelecionado}
-        />
-        <Legenda comRota={!!resultado} />
-      </main>
     </div>
   )
 }

@@ -1,17 +1,14 @@
 import {
   NIVEIS,
   ORDEM_NIVEIS,
+  duracaoCurta,
   ehAtencao,
   fraseComparativa,
   horaDoEta,
   movimentado,
   nomeDoTrecho,
 } from '../services/risco'
-
-function duracao(min) {
-  const h = Math.floor(min / 60)
-  return h ? `${h} h ${String(min % 60).padStart(2, '0')}` : `${min} min`
-}
+import { aparenciaDoClima } from '../services/clima'
 
 const TAMANHO_TRECHO_KM = 5
 
@@ -44,7 +41,6 @@ function agruparAtencao(trechos) {
   })
 }
 
-// Onde a viagem muda de fase do dia — é o que torna o horário de saída visível.
 function marcosDeFase(trechos) {
   const marcos = []
   trechos.forEach((t, i) => {
@@ -53,11 +49,9 @@ function marcosDeFase(trechos) {
   return marcos
 }
 
-// Faixa horizontal da viagem (A → B) com cada trecho pintado na sua posição.
 function LinhaDoTempo({ resumo, trechos, onSelecionar }) {
   const total = resumo.distancia_km
   const posicao = (km) => `${Math.min(100, (km / total) * 100)}%`
-  const marcos = marcosDeFase(trechos)
 
   return (
     <div className="linha-tempo">
@@ -86,7 +80,7 @@ function LinhaDoTempo({ resumo, trechos, onSelecionar }) {
       </div>
 
       <div className="regua-tempo">
-        {marcos.map((t) => (
+        {marcosDeFase(trechos).map((t) => (
           <span key={t.segmento_id} className="marco-fase" style={{ left: posicao(t.km_na_rota) }}>
             <span className="marco-hora">{horaDoEta(t.eta)}</span>
             <span className="marco-fase-nome">{t.fase_dia}</span>
@@ -97,39 +91,57 @@ function LinhaDoTempo({ resumo, trechos, onSelecionar }) {
   )
 }
 
-function ListaAlertas({ trechos, onSelecionar }) {
-  // Clima em trecho sensível primeiro: é o alerta que muda o nível de risco.
+// Só alertas das primeiras horas: previsão para o fim de uma viagem longa muda
+// antes de o motorista chegar lá.
+function ListaAlertas({ resumo, trechos, onSelecionar }) {
   const alertas = trechos
     .flatMap((t) => t.alertas.map((a) => ({ ...a, trecho: t })))
-    .sort((a, b) => Number(b.sensivel) - Number(a.sensivel))
+    .filter((a) => a.proximo)
+    .sort((a, b) => Number(b.sensivel) - Number(a.sensivel) || a.trecho.km_na_rota - b.trecho.km_na_rota)
 
-  if (!alertas.length) return null
+  const adiante = resumo.alertas_clima_adiante ?? 0
+  if (!alertas.length && !adiante) return null
 
   return (
-    <>
+    <section className="bloco">
       <h3 className="titulo-secao">
-        Alertas de clima <span className="sutil">na hora em que você passa</span>
+        Clima nas próximas {resumo.horizonte_alertas_h} h
+        <span className="sutil"> de viagem</span>
       </h3>
-      <ul className="lista-alertas">
-        {alertas.slice(0, 6).map((a) => (
-          <li key={`${a.trecho.segmento_id}-${a.tipo}`}>
-            <button onClick={() => onSelecionar(a.trecho)} className={a.sensivel ? 'alerta-forte' : undefined}>
-              <span className="alerta-icone" aria-hidden="true">
-                {a.tipo === 'neblina' ? '🌫️' : '🌧️'}
-              </span>
-              <span className="atencao-texto">
-                <span className="atencao-titulo">{nomeDoTrecho(a.trecho)}</span>
-                <span className="atencao-sub">
-                  {horaDoEta(a.trecho.eta)} · {a.texto}
-                </span>
-              </span>
-              <span className="seta" aria-hidden="true">›</span>
-            </button>
-          </li>
-        ))}
-        {alertas.length > 6 && <li className="sutil">e mais {alertas.length - 6} trechos com clima previsto.</li>}
-      </ul>
-    </>
+      {alertas.length ? (
+        <ul className="lista-cartoes">
+          {alertas.slice(0, 5).map((a) => {
+            const ap = aparenciaDoClima(null, a.tipo)
+            return (
+              <li key={`${a.trecho.segmento_id}-${a.tipo}`}>
+                <button onClick={() => onSelecionar(a.trecho)} className={a.sensivel ? 'cartao forte' : 'cartao'}>
+                  <span className="cartao-icone" aria-hidden="true">
+                    {ap.icone}
+                  </span>
+                  <span className="cartao-texto">
+                    <strong>{nomeDoTrecho(a.trecho)}</strong>
+                    <span>
+                      {horaDoEta(a.trecho.eta)} · {a.texto}
+                    </span>
+                  </span>
+                  <span className="seta" aria-hidden="true">
+                    ›
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      ) : (
+        <p className="sutil">Sem chuva ou neblina previstas no começo da viagem.</p>
+      )}
+      {adiante > 0 && (
+        <p className="nota">
+          Mais {adiante} {adiante === 1 ? 'trecho tem' : 'trechos têm'} chuva ou neblina na previsão, mas só mais
+          adiante na viagem — a previsão para lá ainda deve mudar. Abra o trecho no mapa para ver.
+        </p>
+      )}
+    </section>
   )
 }
 
@@ -150,22 +162,31 @@ function manchete(resumo) {
   return { classe: 'ok', texto: 'Nenhum trecho de risco alto ou crítico na sua rota' }
 }
 
-export default function ResumoRota({ resultado, origem, destino, onSelecionar }) {
-  const { resumo, trechos, avisos } = resultado
+export default function ResumoRota({ resultado, onSelecionar, onLimpar }) {
+  const { resumo, trechos, avisos, origem, destino } = resultado
   const atencao = agruparAtencao(trechos)
   const m = manchete(resumo)
   const maisMovimentados = trechos.filter(movimentado).length
 
   return (
-    <section className="resumo">
-      <div className="resumo-cabecalho">
-        <div className="rota-nomes">
-          <strong>{origem.nome.split(',')[0]}</strong> → <strong>{destino.nome.split(',')[0]}</strong>
+    <div className="resultado">
+      <header className="cabecalho-rota">
+        <div>
+          <div className="rota-nomes">
+            <strong>{origem.nome}</strong>
+            <span className="seta-rota" aria-hidden="true">
+              →
+            </span>
+            <strong>{destino.nome}</strong>
+          </div>
+          <div className="rota-meta">
+            {Math.round(resumo.distancia_km).toLocaleString('pt-BR')} km · {duracaoCurta(resumo.duracao_min)}
+          </div>
         </div>
-        <div className="rota-meta">
-          {Math.round(resumo.distancia_km).toLocaleString('pt-BR')} km · {duracao(resumo.duracao_min)}
-        </div>
-      </div>
+        <button className="botao-fechar" onClick={onLimpar} aria-label="Limpar rota">
+          ✕
+        </button>
+      </header>
 
       <div className={`manchete manchete-${m.classe}`}>{m.texto}</div>
 
@@ -182,59 +203,62 @@ export default function ResumoRota({ resultado, origem, destino, onSelecionar })
             ))}
           </div>
 
-          <ListaAlertas trechos={trechos} onSelecionar={onSelecionar} />
+          <ListaAlertas resumo={resumo} trechos={trechos} onSelecionar={onSelecionar} />
 
-          <h3 className="titulo-secao">
-            Pontos de atenção <span className="sutil">em ordem de passagem</span>
-          </h3>
-          {atencao.length ? (
-            <ol className="lista-atencao">
-              {atencao.map((g) => (
-                <li key={g.pior.segmento_id}>
-                  <button onClick={() => onSelecionar(g.pior)}>
-                    <span className="selo" style={{ background: NIVEIS[g.pior.nivel_risco].cor }}>
-                      {g.pior.nivel_risco}
-                    </span>
-                    <span className="atencao-texto">
-                      <span className="atencao-titulo">
-                        BR-{g.br}, km {g.kmInicio}–{g.kmFim}
-                        {g.trechos.length > 1 && <span className="sutil"> ({g.kmFim - g.kmInicio} km)</span>}
+          <section className="bloco">
+            <h3 className="titulo-secao">
+              Pontos de atenção <span className="sutil">em ordem de passagem</span>
+            </h3>
+            {atencao.length ? (
+              <ol className="lista-cartoes">
+                {atencao.map((g) => (
+                  <li key={g.pior.segmento_id}>
+                    <button className="cartao" onClick={() => onSelecionar(g.pior)}>
+                      <span className="selo" style={{ background: NIVEIS[g.pior.nivel_risco].cor }}>
+                        {g.pior.nivel_risco}
                       </span>
-                      <span className="atencao-sub">
-                        Por volta das {horaDoEta(g.pior.eta)} · a {Math.round(g.inicioNaRota)} km da partida
+                      <span className="cartao-texto">
+                        <strong>
+                          BR-{g.br}, km {g.kmInicio}–{g.kmFim}
+                        </strong>
+                        <span>
+                          Por volta das {horaDoEta(g.pior.eta)} · a {Math.round(g.inicioNaRota)} km da partida
+                        </span>
+                        <span>{fraseComparativa(g.pior)}</span>
                       </span>
-                      <span className="atencao-sub">{fraseComparativa(g.pior)}</span>
-                    </span>
-                    <span className="seta" aria-hidden="true">›</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p className="sutil">Nenhum trecho de risco alto ou crítico. Mesmo assim, dirija com atenção.</p>
-          )}
+                      <span className="seta" aria-hidden="true">
+                        ›
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p className="sutil">Nenhum trecho de risco alto ou crítico. Mesmo assim, dirija com atenção.</p>
+            )}
+          </section>
 
           {maisMovimentados > 0 && (
-            <p className="nota-frequencia">
+            <p className="nota">
               <strong>{maisMovimentados}</strong>{' '}
               {maisMovimentados === 1 ? 'trecho concentra' : 'trechos concentram'} muitos acidentes por ano, mesmo
-              com nível de risco baixo. A cor mostra a <em>gravidade</em> dos acidentes, não a quantidade.
+              com nível baixo. A cor mostra a <em>gravidade</em> dos acidentes, não a quantidade.
             </p>
           )}
         </>
       )}
 
       {avisos.map((aviso) => (
-        <p key={aviso} className="aviso">
+        <p key={aviso} className="nota">
           {aviso}
         </p>
       ))}
 
       <p className="cobertura">
         {trechos.length
-          ? `Analisamos ${resumo.cobertura_dados_pct}% da rota — o restante são vias estaduais, municipais ou trechos sem histórico, mostrados em cinza.`
+          ? `Analisamos ${resumo.cobertura_dados_pct}% da rota — o restante são vias estaduais, municipais ou trechos sem histórico, tracejados em cinza.`
           : 'Os dados cobrem apenas rodovias federais (BRs). Tente uma das rotas de exemplo.'}
       </p>
-    </section>
+    </div>
   )
 }

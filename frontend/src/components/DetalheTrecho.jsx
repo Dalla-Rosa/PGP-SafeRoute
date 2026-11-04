@@ -6,8 +6,8 @@ import {
   fraseComparativa,
   horaDoEta,
   movimentado,
-  rotuloClima,
 } from '../services/risco'
+import { aparenciaDoClima, rotuloClima } from '../services/clima'
 
 // Régua do risco relativo: 0× a 3×, com a média da BR (1×) marcada.
 function ReguaRelativa({ t }) {
@@ -46,14 +46,15 @@ function Dado({ rotulo, valor, detalhe, largo }) {
 export default function DetalheTrecho({ t, onVoltar, textoVoltar }) {
   const nivel = NIVEIS[t.nivel_risco]
   const e = t.estatisticas
+  const distante = t.horas_ate_passagem > 3
 
   return (
-    <section className="detalhe">
+    <div className="detalhe">
       <button className="voltar" onClick={onVoltar}>
         ‹ {textoVoltar}
       </button>
 
-      <div className="detalhe-topo" style={{ borderColor: nivel.cor }}>
+      <div className="detalhe-topo" style={{ background: nivel.corClara, borderColor: nivel.cor }}>
         <span className="selo grande" style={{ background: nivel.cor }}>
           Risco {nivel.rotulo}
         </span>
@@ -67,14 +68,21 @@ export default function DetalheTrecho({ t, onVoltar, textoVoltar }) {
         <div className="passagem">
           <span className="passagem-hora">{horaDoEta(t.eta)}</span>
           <span className="passagem-detalhe">
-            {t.fase_dia} · {rotuloClima(t.clima)}
+            {t.fase_dia}
+            {t.clima && (
+              <>
+                {' · '}
+                {aparenciaDoClima(null, t.clima).icone} {rotuloClima(t.clima)}
+              </>
+            )}
           </span>
         </div>
       )}
 
       {t.alertas?.map((a) => (
-        <p key={a.tipo} className={a.sensivel ? 'alerta alerta-forte' : 'alerta'}>
-          {a.tipo === 'neblina' ? '🌫️' : '🌧️'} {a.texto}
+        <p key={a.tipo} className={a.sensivel ? 'alerta forte' : 'alerta'}>
+          {aparenciaDoClima(null, a.tipo).icone} {a.texto}
+          {distante && <span className="alerta-ressalva">Previsão para daqui a horas: deve mudar até lá.</span>}
         </p>
       ))}
 
@@ -85,7 +93,7 @@ export default function DetalheTrecho({ t, onVoltar, textoVoltar }) {
 
       {/* O modelo mede gravidade; a frequência precisa aparecer à parte para que
           um trecho verde e movimentado não seja lido como "seguro". */}
-      <div className={movimentado(t) ? 'frequencia frequencia-alta' : 'frequencia'}>
+      <div className={movimentado(t) ? 'frequencia alta' : 'frequencia'}>
         <span className="frequencia-valor">{formatarNumero(e.acidentes_por_ano)}</span>
         <span className="frequencia-texto">
           acidentes por ano neste trecho de 5 km
@@ -113,6 +121,6 @@ export default function DetalheTrecho({ t, onVoltar, textoVoltar }) {
           </ul>
         </div>
       )}
-    </section>
+    </div>
   )
 }

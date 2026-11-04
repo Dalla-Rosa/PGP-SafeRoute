@@ -61,11 +61,15 @@ class ServicoClima:
         self._mapa_wmo = mapa_wmo_para_clima
         self._cache: dict[tuple[float, float], tuple[float, PrevisaoPonto]] = {}
 
-    def grupo_de_clima(self, momento_local: datetime, previsao: PrevisaoPonto | None) -> str | None:
-        """Grupo do modelo (claro/nublado/chuva/neblina) ou None se não houver previsão."""
+    def codigo_wmo(self, momento_local: datetime, previsao: PrevisaoPonto | None) -> int | None:
+        """Código WMO bruto, que distingue garoa de tempestade — útil para os ícones."""
         if previsao is None:
             return None
-        codigo = previsao.codigos.get(momento_local.strftime("%Y-%m-%dT%H:00"))
+        return previsao.codigos.get(momento_local.strftime("%Y-%m-%dT%H:00"))
+
+    def grupo_de_clima(self, momento_local: datetime, previsao: PrevisaoPonto | None) -> str | None:
+        """Grupo do modelo (claro/nublado/chuva/neblina) ou None se não houver previsão."""
+        codigo = self.codigo_wmo(momento_local, previsao)
         return self._mapa_wmo.get(codigo) if codigo is not None else None
 
     async def consultar(self, cliente, pontos, ate: datetime) -> list[PrevisaoPonto | None]:

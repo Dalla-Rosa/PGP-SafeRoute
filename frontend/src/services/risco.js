@@ -6,26 +6,30 @@
 
 export const NIVEIS = {
   Baixo: {
-    cor: '#16a34a',
-    peso: 5,
+    cor: '#15803d',
+    corClara: '#dcfce7',
+    peso: 6,
     rotulo: 'Baixo',
     resumo: 'Acidentes aqui tendem a ser menos graves que a média desta rodovia.',
   },
   Médio: {
     cor: '#ca8a04',
-    peso: 6,
+    corClara: '#fef9c3',
+    peso: 7,
     rotulo: 'Médio',
     resumo: 'Gravidade parecida com a média desta rodovia.',
   },
   Alto: {
     cor: '#ea580c',
-    peso: 7,
+    corClara: '#ffedd5',
+    peso: 8,
     rotulo: 'Alto',
     resumo: 'Acidentes aqui costumam ser mais graves que a média desta rodovia.',
   },
   Crítico: {
     cor: '#dc2626',
-    peso: 8,
+    corClara: '#fee2e2',
+    peso: 9,
     rotulo: 'Crítico',
     resumo: 'Um dos trechos onde os acidentes mais terminam em morte nesta rodovia.',
   },
@@ -33,7 +37,7 @@ export const NIVEIS = {
 
 export const ORDEM_NIVEIS = ['Crítico', 'Alto', 'Médio', 'Baixo']
 
-export const COR_SEM_DADOS = '#8492a6'
+export const COR_SEM_DADOS = '#94a3b8'
 
 // Acima disso o trecho ganha destaque de "muitos acidentes", mesmo em verde.
 export const MUITOS_ACIDENTES_POR_ANO = 20
@@ -53,6 +57,11 @@ export function horaDoEta(eta) {
   return new Date(eta).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 }
 
+export function duracaoCurta(min) {
+  const h = Math.floor(min / 60)
+  return h ? `${h} h ${String(min % 60).padStart(2, '0')} min` : `${min} min`
+}
+
 export function fraseComparativa(t) {
   const rr = t.estatisticas.risco_relativo_na_br
   const br = `BR-${t.br}`
@@ -60,15 +69,6 @@ export function fraseComparativa(t) {
   if (rr <= 0.85) return `Acidentes menos letais que a média da ${br} (${formatarNumero(rr)}×)`
   return `Letalidade próxima da média da ${br}`
 }
-
-const ROTULO_CLIMA = {
-  claro: 'Céu claro',
-  nublado: 'Nublado',
-  chuva: 'Chuva',
-  neblina: 'Neblina',
-}
-
-export const rotuloClima = (clima) => ROTULO_CLIMA[clima] ?? 'Previsão indisponível'
 
 // Dicas em linguagem simples, derivadas das estatísticas do trecho.
 export function dicas(t) {

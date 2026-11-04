@@ -1,14 +1,17 @@
 :root {
-  --fundo: #f6f7f9;
+  --fundo: #f1f3f6;
   --superficie: #ffffff;
   --texto: #0f172a;
   --texto-2: #475569;
   --texto-3: #64748b;
   --borda: #e2e8f0;
-  --destaque: #1e293b;
+  --marinho: #0f2740;
   --foco: #2563eb;
-  --raio: 10px;
-  --largura-painel: 400px;
+  --raio: 12px;
+  --raio-g: 16px;
+  --sombra: 0 1px 2px rgb(15 23 42 / 0.08), 0 8px 24px rgb(15 23 42 / 0.12);
+  --sombra-leve: 0 1px 3px rgb(15 23 42 / 0.12);
+  --largura-painel: 404px;
   font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--texto);
   background: var(--fundo);
@@ -37,108 +40,189 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
 .sutil {
   color: var(--texto-3);
   font-weight: 400;
 }
 
-/* ---------- layout ---------- */
+/* ---------- layout: mapa em tela cheia, painel flutuando por cima ---------- */
 
 .app {
-  display: grid;
-  grid-template-columns: var(--largura-painel) 1fr;
+  position: relative;
   height: 100%;
-}
-
-.painel {
-  display: flex;
-  flex-direction: column;
-  background: var(--superficie);
-  border-right: 1px solid var(--borda);
-  overflow-y: auto;
-  z-index: 1;
+  overflow: hidden;
 }
 
 .area-mapa {
-  position: relative;
-  min-height: 0;
+  position: absolute;
+  inset: 0;
 }
 
 .mapa {
   height: 100%;
   width: 100%;
-  background: #e5e7eb;
+  background: #e8eaed;
 }
 
-/* ---------- marca ---------- */
+.painel {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  bottom: 12px;
+  width: var(--largura-painel);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 2px;
+}
+
+.puxador {
+  display: none;
+}
+
+/* ---------- cartão de busca ---------- */
+
+.cartao-busca {
+  background: var(--superficie);
+  border-radius: var(--raio-g);
+  box-shadow: var(--sombra);
+  padding: 14px 16px 12px;
+  flex: none;
+}
 
 .marca {
   display: flex;
-  gap: 12px;
+  gap: 11px;
   align-items: center;
-  padding: 18px 20px 12px;
+  margin-bottom: 14px;
 }
 
-.logo img {
-  width: 40px;
-  height: 40px;
+.marca img {
   display: block;
+  border-radius: 9px;
+  flex: none;
 }
 
 .marca h1 {
-  margin: 0;
-  font-size: 20px;
-  letter-spacing: -0.01em;
+  font-size: 19px;
+  letter-spacing: -0.02em;
 }
 
 .marca p {
-  margin: 2px 0 0;
-  font-size: 13px;
-  color: var(--texto-2);
+  margin: 1px 0 0;
+  font-size: 12px;
+  color: var(--texto-3);
+  line-height: 1.3;
 }
 
-/* ---------- formulário ---------- */
-
-.form-rota {
-  padding: 4px 20px 16px;
-  border-bottom: 1px solid var(--borda);
-}
+/* ---------- campos de origem e destino ---------- */
 
 .campos {
   position: relative;
   display: grid;
   gap: 8px;
-  padding-right: 40px;
+  padding-right: 42px;
 }
 
-.campo {
+/* Linha pontilhada ligando A a B, como nos apps de mapa. */
+.trilho-campos {
+  position: absolute;
+  left: 17px;
+  top: 34px;
+  bottom: 34px;
+  width: 2px;
+  background-image: linear-gradient(var(--borda) 55%, transparent 0);
+  background-size: 2px 7px;
+}
+
+.campo-lugar {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   border: 1px solid var(--borda);
   border-radius: var(--raio);
-  padding: 0 12px;
   background: var(--fundo);
+  padding: 0 12px;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.campo:focus-within {
+.campo-lugar:focus-within {
   border-color: var(--foco);
   background: var(--superficie);
 }
 
-.campo input {
+.campo-lugar input {
   flex: 1;
+  min-width: 0;
   border: 0;
-  background: transparent;
-  padding: 11px 0;
+  background: none;
   font: inherit;
   font-size: 15px;
+  padding: 11px 0;
   color: var(--texto);
-  min-width: 0;
 }
 
-.campo input:focus-visible {
+.campo-lugar input:focus-visible {
   outline: none;
+}
+
+.marcador {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 1;
+}
+
+.marcador-a {
+  background: var(--marinho);
+}
+
+.marcador-b {
+  background: #dc2626;
+}
+
+.marcador.pequeno {
+  width: 17px;
+  height: 17px;
+  font-size: 10px;
+}
+
+.confere {
+  color: #15803d;
+  font-weight: 700;
+  flex: none;
+}
+
+.girando {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--borda);
+  border-top-color: var(--texto-3);
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .botao-inverter {
@@ -146,142 +230,226 @@ input:focus-visible {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--borda);
+  border-radius: 50%;
   background: var(--superficie);
+  display: grid;
+  place-items: center;
   color: var(--texto-2);
-  font-size: 16px;
 }
 
-.marcador {
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+.botao-inverter:hover:not(:disabled) {
+  background: var(--fundo);
+}
+
+.botao-inverter:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.botao-inverter svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- sugestões do autocomplete ---------- */
+
+.sugestoes {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  background: var(--superficie);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  max-height: 290px;
+  overflow-y: auto;
+}
+
+.sugestoes button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 9px 10px;
+  border-radius: 9px;
+  color: inherit;
+}
+
+.sugestoes button.destacada {
+  background: var(--fundo);
+}
+
+.icone-pino {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  fill: var(--texto-3);
+}
+
+.sugestao-texto {
+  display: grid;
+  min-width: 0;
+}
+
+.sugestao-texto strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sugestao-texto span {
   font-size: 12px;
-  font-weight: 700;
-  color: #fff;
+  color: var(--texto-3);
+}
+
+/* ---------- horário e botão principal ---------- */
+
+.linha-saida {
+  display: flex;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.campo-horario {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo);
+  padding: 0 11px;
+  min-width: 0;
+}
+
+.campo-horario > span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto-3);
   flex: none;
 }
 
-.marcador-a {
-  background: var(--destaque);
+.icone-relogio {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--texto-3);
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
-.marcador-b {
-  background: #fff;
-  color: var(--destaque);
-  box-shadow: inset 0 0 0 3px var(--destaque);
-}
-
-.marcador.pequeno {
-  width: 18px;
-  height: 18px;
-  font-size: 10px;
-}
-
-.pino {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font: 700 13px Inter, system-ui, sans-serif;
-  color: #fff;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.35);
-}
-
-.pino.marcador-b {
-  color: var(--destaque);
-  box-shadow: inset 0 0 0 3px var(--destaque), 0 2px 6px rgb(0 0 0 / 0.35);
+.campo-horario input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  padding: 10px 0;
+  color: var(--texto);
 }
 
 .botao-principal {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
+  flex: none;
   border: 0;
   border-radius: var(--raio);
-  background: var(--destaque);
+  background: var(--marinho);
   color: #fff;
+  font-size: 14px;
   font-weight: 600;
-  font-size: 15px;
+  padding: 0 18px;
+}
+
+.botao-principal:hover:not(:disabled) {
+  background: #16395c;
 }
 
 .botao-principal:disabled {
-  opacity: 0.45;
+  background: #cbd5e1;
   cursor: default;
 }
 
 .demos {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: 6px;
-  margin-top: 12px;
-  font-size: 12px;
-  color: var(--texto-3);
+  margin-top: 10px;
 }
 
 .chip {
   border: 1px solid var(--borda);
-  background: var(--superficie);
   border-radius: 999px;
-  padding: 4px 10px;
+  background: var(--superficie);
+  padding: 5px 11px;
   font-size: 12px;
   color: var(--texto-2);
 }
 
 .chip:hover:not(:disabled) {
+  background: var(--fundo);
   border-color: var(--texto-3);
-  color: var(--texto);
+}
+
+.chip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---------- conteúdo (resultado, detalhe, boas-vindas) ---------- */
+
+.conteudo,
+.erro {
+  background: var(--superficie);
+  border-radius: var(--raio-g);
+  box-shadow: var(--sombra);
+  padding: 16px;
+  flex: none;
 }
 
 .erro {
-  margin: 12px 20px 0;
-  padding: 10px 12px;
-  border-radius: var(--raio);
   background: #fef2f2;
   color: #991b1b;
-  font-size: 14px;
-}
-
-/* ---------- conteúdo ---------- */
-
-.conteudo {
-  flex: 1;
-  padding: 16px 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 12px 14px;
 }
 
 .titulo-secao {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--texto-2);
-  margin: 20px 0 10px;
+  color: var(--texto-3);
+  margin-bottom: 9px;
 }
 
 .titulo-secao .sutil {
   text-transform: none;
   letter-spacing: 0;
-  font-size: 12px;
-  margin-left: 4px;
-}
-
-.boas-vindas .titulo-secao {
-  margin-top: 4px;
+  font-weight: 400;
 }
 
 .boas-vindas ol {
-  margin: 0 0 14px;
-  padding-left: 20px;
+  margin: 0 0 12px;
+  padding-left: 18px;
+  font-size: 13.5px;
   line-height: 1.5;
-  font-size: 14px;
+  color: var(--texto-2);
 }
 
 .boas-vindas li + li {
@@ -289,79 +457,101 @@ input:focus-visible {
 }
 
 .boas-vindas p {
-  font-size: 13px;
-  line-height: 1.5;
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
 }
 
-.link {
-  margin-top: 16px;
-  border: 0;
-  background: none;
-  padding: 0;
-  color: var(--foco);
-  font-size: 13px;
-}
+/* ---------- cabeçalho do resultado ---------- */
 
-/* ---------- resumo da rota ---------- */
-
-.resumo-cabecalho {
+.cabecalho-rota {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: baseline;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.rota-nomes {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
   flex-wrap: wrap;
-  font-size: 15px;
+}
+
+.seta-rota {
+  color: var(--texto-3);
 }
 
 .rota-meta {
+  margin-top: 2px;
+  font-size: 12.5px;
   color: var(--texto-3);
+}
+
+.botao-fechar {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--fundo);
+  color: var(--texto-2);
   font-size: 13px;
-  white-space: nowrap;
+}
+
+.botao-fechar:hover {
+  background: var(--borda);
 }
 
 .manchete {
-  margin-top: 12px;
-  padding: 12px 14px;
   border-radius: var(--raio);
+  padding: 11px 13px;
+  font-size: 14px;
   font-weight: 600;
-  font-size: 16px;
   line-height: 1.35;
 }
 
 .manchete-critico {
-  background: #fef2f2;
+  background: #fee2e2;
   color: #991b1b;
 }
 
 .manchete-alto {
-  background: #fff7ed;
+  background: #ffedd5;
   color: #9a3412;
 }
 
 .manchete-ok {
-  background: #f0fdf4;
+  background: #dcfce7;
   color: #166534;
 }
 
 .manchete-neutro {
   background: var(--fundo);
   color: var(--texto-2);
-  font-weight: 500;
+}
+
+/* ---------- linha do tempo da viagem ---------- */
+
+.linha-tempo {
+  margin-top: 16px;
 }
 
 .barra-rota {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 16px;
 }
 
 .barra-trilho {
   position: relative;
   flex: 1;
-  height: 14px;
-  border-radius: 7px;
-  background: #8492a6;
+  height: 15px;
+  border-radius: 8px;
+  background: var(--borda);
   overflow: hidden;
 }
 
@@ -374,275 +564,13 @@ input:focus-visible {
 }
 
 .barra-trecho:hover {
-  filter: brightness(0.85);
-}
-
-.contagem {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 12px;
-}
-
-.contagem-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 13px;
-  color: var(--texto-2);
-}
-
-.contagem-item strong {
-  color: var(--texto);
-}
-
-.ponto {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex: none;
-}
-
-.lista-atencao {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
-}
-
-.lista-atencao button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  text-align: left;
-  border: 1px solid var(--borda);
-  background: var(--superficie);
-  border-radius: var(--raio);
-  padding: 10px 12px;
-}
-
-.lista-atencao button:hover {
-  border-color: var(--texto-3);
-}
-
-.selo {
-  flex: none;
-  min-width: 58px;
-  text-align: center;
-  padding: 3px 8px;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.selo.grande {
-  font-size: 13px;
-  padding: 4px 10px;
-  display: inline-block;
-}
-
-.atencao-texto {
-  display: grid;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.atencao-titulo {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.atencao-sub {
-  font-size: 12px;
-  color: var(--texto-3);
-}
-
-.seta {
-  color: var(--texto-3);
-  font-size: 20px;
-}
-
-.cobertura {
-  margin-top: 18px;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--texto-3);
-}
-
-/* ---------- detalhe do trecho ---------- */
-
-.voltar {
-  border: 0;
-  background: none;
-  padding: 0;
-  color: var(--foco);
-  font-size: 14px;
-  margin-bottom: 14px;
-}
-
-.detalhe-topo {
-  border-left: 4px solid;
-  padding-left: 12px;
-}
-
-.detalhe-topo h2 {
-  margin: 8px 0 2px;
-  font-size: 20px;
-}
-
-.detalhe-topo p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.comparacao {
-  margin: 16px 0 6px;
-  font-size: 15px;
-  line-height: 1.45;
-}
-
-.regua {
-  margin: 30px 0 4px;
-}
-
-.regua-trilho {
-  position: relative;
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #16a34a, #ca8a04 33%, #ea580c 60%, #dc2626);
-}
-
-.regua-media {
-  position: absolute;
-  top: -6px;
-  bottom: -6px;
-  width: 2px;
-  background: var(--texto);
-}
-
-.regua-media span {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 11px;
-  color: var(--texto-2);
-  padding-bottom: 2px;
-}
-
-.regua-valor {
-  position: absolute;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
-  transform: translate(-50%, -50%);
-}
-
-.regua-legenda {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-  font-size: 11px;
-  color: var(--texto-3);
-}
-
-.dados {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.dado {
-  display: grid;
-  gap: 2px;
-  align-content: start;
-  padding: 10px 12px;
-  border-radius: var(--raio);
-  background: var(--fundo);
-}
-
-.dado-largo {
-  grid-column: 1 / -1;
-}
-
-.dado-rotulo {
-  font-size: 12px;
-  color: var(--texto-3);
-}
-
-.dado-valor {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.dado-detalhe {
-  font-size: 12px;
-  color: var(--texto-2);
-}
-
-.dicas ul {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.dicas li + li {
-  margin-top: 6px;
-}
-
-/* ---------- rodapé ---------- */
-
-.rodape {
-  padding: 12px 20px 16px;
-  border-top: 1px solid var(--borda);
-  font-size: 11px;
-  line-height: 1.5;
-  color: var(--texto-3);
-}
-
-/* ---------- horário de saída ---------- */
-
-.campo-horario {
-  margin-top: 8px;
-  justify-content: space-between;
-}
-
-.rotulo-horario {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--texto-2);
-}
-
-.campo-horario input {
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 14px;
-  color: var(--texto);
-  text-align: right;
-  padding: 10px 0;
-}
-
-/* ---------- linha do tempo da viagem ---------- */
-
-.linha-tempo {
-  margin-top: 16px;
+  filter: brightness(0.82);
 }
 
 .regua-tempo {
   position: relative;
-  height: 32px;
-  margin: 4px 22px 0;
+  height: 33px;
+  margin: 5px 24px 0;
 }
 
 .marco-fase {
@@ -664,7 +592,7 @@ input:focus-visible {
 
 .marco-hora {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .marco-fase-nome {
@@ -672,19 +600,47 @@ input:focus-visible {
   color: var(--texto-3);
 }
 
-/* ---------- alertas de clima ---------- */
+.contagem {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
 
-.lista-alertas {
+.contagem-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--texto-2);
+}
+
+.contagem-item strong {
+  color: var(--texto);
+}
+
+.ponto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* ---------- listas de cartões (alertas e pontos de atenção) ---------- */
+
+.bloco {
+  margin-top: 18px;
+}
+
+.lista-cartoes {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   gap: 6px;
-  font-size: 12px;
-  color: var(--texto-3);
 }
 
-.lista-alertas button {
+.cartao {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -694,62 +650,210 @@ input:focus-visible {
   background: var(--superficie);
   border-radius: var(--raio);
   padding: 10px 12px;
+  color: inherit;
 }
 
-.lista-alertas button:hover {
+.cartao:hover {
   border-color: var(--texto-3);
+  background: var(--fundo);
 }
 
-.lista-alertas .alerta-forte {
+.cartao.forte {
   border-color: #fbbf24;
   background: #fffbeb;
 }
 
-.alerta-icone {
+.cartao-icone {
   flex: none;
-  font-size: 18px;
+  font-size: 19px;
 }
 
-.alerta {
-  margin: 10px 0 0;
-  padding: 8px 10px;
-  border-radius: var(--raio);
-  background: var(--fundo);
-  font-size: 13px;
-  line-height: 1.45;
+.cartao-texto {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cartao-texto strong {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.cartao-texto span {
+  font-size: 12px;
+  color: var(--texto-3);
+  line-height: 1.4;
+}
+
+.selo {
+  flex: none;
+  min-width: 56px;
+  text-align: center;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.selo.grande {
+  font-size: 12.5px;
+  padding: 4px 11px;
+  display: inline-block;
+}
+
+.seta {
+  color: var(--texto-3);
+  font-size: 19px;
+  flex: none;
+}
+
+.nota,
+.cobertura {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--texto-2);
 }
 
-.alerta.alerta-forte {
-  background: #fffbeb;
-  border: 1px solid #fbbf24;
-  color: #92400e;
+.nota {
+  padding: 10px 12px;
+  border-radius: var(--raio);
+  background: var(--fundo);
 }
 
-/* ---------- horário de passagem no trecho ---------- */
+.cobertura {
+  color: var(--texto-3);
+}
+
+/* ---------- detalhe do trecho ---------- */
+
+.voltar {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-bottom: 12px;
+  color: var(--texto-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.detalhe-topo {
+  border-left: 4px solid;
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+
+.detalhe-topo h2 {
+  margin: 7px 0 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+.detalhe-topo p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+}
 
 .passagem {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 13px;
   padding: 10px 12px;
   border-radius: var(--raio);
   background: var(--fundo);
 }
 
 .passagem-hora {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .passagem-detalhe {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--texto-2);
 }
 
-/* ---------- frequência (separada da gravidade) ---------- */
+.alerta {
+  margin: 9px 0 0;
+  padding: 9px 11px;
+  border-radius: var(--raio);
+  background: var(--fundo);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--texto-2);
+}
+
+.alerta.forte {
+  background: #fffbeb;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+}
+
+.alerta-ressalva {
+  display: block;
+  margin-top: 4px;
+  font-size: 11.5px;
+  opacity: 0.8;
+}
+
+.comparacao {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--texto-2);
+}
+
+.regua {
+  margin-top: 12px;
+}
+
+.regua-trilho {
+  position: relative;
+  height: 7px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #dcfce7, #fef9c3, #fee2e2);
+}
+
+.regua-media {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--texto-3);
+}
+
+.regua-media span {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9.5px;
+  color: var(--texto-3);
+  white-space: nowrap;
+}
+
+.regua-valor {
+  position: absolute;
+  top: -3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  transform: translateX(-50%);
+  box-shadow: var(--sombra-leve);
+}
+
+.regua-legenda {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 10.5px;
+  color: var(--texto-3);
+}
 
 .frequencia {
   display: flex;
@@ -761,56 +865,198 @@ input:focus-visible {
   border-radius: var(--raio);
 }
 
-.frequencia-alta {
+.frequencia.alta {
   border-color: #fbbf24;
   background: #fffbeb;
 }
 
 .frequencia-valor {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 700;
   line-height: 1;
 }
 
 .frequencia-texto {
-  font-size: 12px;
+  font-size: 11.5px;
   line-height: 1.45;
   color: var(--texto-2);
 }
 
-.nota-frequencia,
-.aviso {
+.dados {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
   margin-top: 14px;
-  padding: 10px 12px;
-  border-radius: var(--raio);
+}
+
+.dado {
   background: var(--fundo);
-  font-size: 12px;
+  border-radius: 10px;
+  padding: 9px 11px;
+  display: grid;
+  gap: 1px;
+}
+
+.dado-largo {
+  grid-column: 1 / -1;
+}
+
+.dado-rotulo {
+  font-size: 10.5px;
+  color: var(--texto-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dado-valor {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dado-detalhe {
+  font-size: 11px;
+  color: var(--texto-3);
+}
+
+.dicas {
+  margin-top: 18px;
+}
+
+.dicas ul {
+  margin: 0;
+  padding-left: 17px;
+  font-size: 13px;
   line-height: 1.5;
   color: var(--texto-2);
 }
 
-/* ---------- legenda do mapa ---------- */
+.dicas li + li {
+  margin-top: 5px;
+}
+
+.rodape {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--texto-3);
+  padding: 0 6px 4px;
+  flex: none;
+}
+
+/* ---------- controles sobre o mapa ---------- */
+
+.controles-mapa {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: grid;
+  gap: 8px;
+}
+
+.controle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto-2);
+}
+
+.controle.ativo {
+  background: var(--marinho);
+  color: #fff;
+}
+
+/* ---------- pinos e selos no mapa ---------- */
+
+.pino {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 6px rgb(15 23 42 / 0.4);
+}
+
+.pino.marcador-b {
+  background: #dc2626;
+}
+
+.selo-clima {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  background: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 7px rgb(15 23 42 / 0.3);
+}
+
+.selo-clima.chuva,
+.selo-clima.tempestade {
+  background: #dbeafe;
+}
+
+.selo-clima.neblina {
+  background: #e2e8f0;
+}
+
+/* ---------- legenda ---------- */
 
 .legenda {
   position: absolute;
   right: 12px;
-  bottom: 28px;
-  z-index: 500;
+  bottom: 26px;
+  z-index: 1000;
   background: var(--superficie);
   border-radius: var(--raio);
-  padding: 10px 12px;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 0.15);
+  box-shadow: var(--sombra);
   font-size: 13px;
+  overflow: hidden;
+  min-width: 182px;
 }
 
-.legenda-titulo {
-  font-weight: 600;
+.legenda-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  border: 0;
+  background: none;
+  padding: 9px 12px;
+  text-align: left;
+  color: inherit;
 }
 
-.legenda-sub {
-  font-size: 11px;
+.legenda-cabecalho strong {
+  display: block;
+  font-size: 12.5px;
+}
+
+.legenda-cabecalho small {
+  font-size: 10.5px;
   color: var(--texto-3);
-  margin-bottom: 6px;
+}
+
+.legenda-seta {
+  color: var(--texto-3);
+  font-size: 11px;
+}
+
+.legenda-itens {
+  padding: 0 12px 10px;
 }
 
 .legenda-item {
@@ -818,11 +1064,19 @@ input:focus-visible {
   align-items: center;
   gap: 8px;
   padding: 2px 0;
+  font-size: 12.5px;
 }
 
 .legenda-linha {
-  width: 26px;
+  width: 24px;
+  height: 5px;
   border-radius: 3px;
+  flex: none;
+}
+
+.legenda-linha.tracejada {
+  background-image: linear-gradient(90deg, currentColor 50%, transparent 0);
+  background-size: 6px 5px;
 }
 
 .leaflet-tooltip {
@@ -830,72 +1084,105 @@ input:focus-visible {
   font-size: 12px;
 }
 
-/* ---------- celular ---------- */
+.leaflet-control-attribution {
+  font-size: 10px;
+}
+
+/* ---------- celular: painel vira gaveta ---------- */
 
 @media (max-width: 760px) {
-  .app {
-    grid-template-columns: 1fr;
-    grid-template-rows: 45vh auto;
-    height: auto;
-    min-height: 100%;
+  .painel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    /* O mapa precisa continuar visível: a gaveta rola por dentro. */
+    max-height: 58vh;
+    background: var(--superficie);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -4px 22px rgb(15 23 42 / 0.18);
+    padding: 0 12px 12px;
+    gap: 12px;
+    transition: transform 0.25s ease;
   }
 
-  .area-mapa {
-    order: -1;
-    height: 45vh;
+  .painel.recolhido {
+    /* Deixa à mostra o puxador e o cartão de busca. */
+    transform: translateY(calc(100% - 210px));
+  }
+
+  .puxador {
+    display: block;
     position: sticky;
     top: 0;
     z-index: 2;
+    align-self: center;
+    width: 42px;
+    height: 20px;
+    border: 0;
+    background: none;
+    flex: none;
   }
 
-  .painel {
-    border-right: 0;
-    overflow: visible;
+  .puxador::before {
+    content: '';
+    display: block;
+    width: 42px;
+    height: 4px;
+    margin-top: 8px;
+    border-radius: 2px;
+    background: var(--borda);
   }
 
-  .marca {
-    padding: 14px 16px 10px;
-  }
-
-  .form-rota,
-  .conteudo,
-  .rodape {
-    padding-left: 16px;
-    padding-right: 16px;
+  .cartao-busca,
+  .conteudo {
+    box-shadow: none;
+    padding: 0 4px;
   }
 
   .conteudo {
-    scroll-margin-top: 45vh;
-  }
-
-  .erro {
-    margin-left: 16px;
-    margin-right: 16px;
+    padding-bottom: 8px;
   }
 
   .legenda {
-    left: 8px;
-    right: 8px;
-    top: 8px;
     bottom: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2px 10px;
-    padding: 6px 8px;
-    font-size: 11px;
+    top: 12px;
+    left: 12px;
+    right: auto;
+    min-width: 0;
   }
 
-  .legenda-titulo,
-  .legenda-sub {
+  .legenda.fechada .legenda-cabecalho small {
     display: none;
   }
 
-  .legenda-item {
-    gap: 4px;
+  .controles-mapa {
+    top: 12px;
+    right: 12px;
   }
 
-  .legenda-linha {
-    width: 14px;
+  .controle-texto {
+    display: none;
+  }
+
+  .controle {
+    padding: 10px 12px;
+  }
+
+  .dados {
+    grid-template-columns: 1fr;
+  }
+
+  .demos {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-left: -4px;
+    padding-left: 4px;
+  }
+
+  .chip {
+    white-space: nowrap;
   }
 }

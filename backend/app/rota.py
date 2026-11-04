@@ -82,25 +82,44 @@ async def tracar_rota(cliente, origem: tuple[float, float], destino: tuple[float
     return Rota(linha=linha, dist_acc_km=dist_acc, dur_acc_s=dur_acc)
 
 
+def _indices_afinados(acc: np.ndarray, minimo_km: float) -> np.ndarray:
+    """Índices que avançam pelo menos `minimo_km` ao longo do caminho.
+
+    Percorre distâncias já acumuladas em vez de recalcular haversine ponto a ponto:
+    a geometria do OSRM traz milhares de pontos e o custo disso dominava a consulta.
+    """
+    mantidos = [0]
+    referencia = acc[0]
+    for i in range(1, len(acc) - 1):
+        if acc[i] - referencia >= minimo_km:
+            mantidos.append(i)
+            referencia = acc[i]
+    mantidos.append(len(acc) - 1)
+    return np.array(mantidos)
+
+
 def afinar(coordenadas: list[list[float]], minimo_km: float = 0.1) -> list[list[float]]:
     """Descarta pontos muito próximos: a geometria do OSRM é densa demais para a tela."""
     if len(coordenadas) <= 2:
         return coordenadas
-    mantidos = [coordenadas[0]]
-    for ponto in coordenadas[1:-1]:
-        if _haversine_acumulado(np.array([mantidos[-1], ponto]))[-1] >= minimo_km:
-            mantidos.append(ponto)
-    mantidos.append(coordenadas[-1])
-    return mantidos
+    pontos = np.asarray(coordenadas, dtype=float)
+    indices = _indices_afinados(_haversine_acumulado(pontos), minimo_km)
+    return pontos[indices].tolist()
 
 
-def _fatiar_linha(rota: Rota, d0: float, d1: float) -> list[list[float]]:
-    """Pedaço da geometria original entre duas distâncias acumuladas."""
+def _fatiar_linha(rota: Rota, d0: float, d1: float, minimo_km: float = 0.1) -> list[list[float]]:
+    """Pedaço da geometria original entre duas distâncias acumuladas, já afinado."""
     acc = rota.dist_acc_km
+    i0, i1 = np.searchsorted(acc, d0, "right"), np.searchsorted(acc, d1, "left")
     inicio = [float(np.interp(d0, acc, rota.linha[:, 0])), float(np.interp(d0, acc, rota.linha[:, 1]))]
     fim = [float(np.interp(d1, acc, rota.linha[:, 0])), float(np.interp(d1, acc, rota.linha[:, 1]))]
-    meio = rota.linha[np.searchsorted(acc, d0, "right") : np.searchsorted(acc, d1, "left")]
-    return afinar([inicio, *meio.tolist(), fim])
+    if i1 <= i0:
+        return [inicio, fim]
+    # As distâncias acumuladas do miolo já existem: afina sem recalcular nada.
+    miolo = rota.linha[i0:i1]
+    indices = _indices_afinados(np.concatenate([[d0], acc[i0:i1], [d1]]), minimo_km)
+    pontos = [inicio, *miolo.tolist(), fim]
+    return [pontos[i] for i in indices]
 
 
 def _descartar_isolados(posicoes: np.ndarray, brs: np.ndarray) -> np.ndarray:
