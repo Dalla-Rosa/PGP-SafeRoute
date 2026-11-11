@@ -89,10 +89,10 @@ https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-
 https://colab.research.google.com/drive/1WwlQfI0iXWQVytxACnqdf2SUvmlSmN63?usp=sharing
 
 
-# Sprint 2
+# Sprint 2/3/4
 
-## Notebook (Sprint 2)
+## Notebook 2/3/4
 https://colab.research.google.com/drive/1WwlQfI0iXWQVytxACnqdf2SUvmlSmN63?usp=sharing
 
-## Artigo (Sprint 2)
+## Artigo 2/3/4
 Overleaf: https://www.overleaf.com/project/6a7b5f0b6dbb7bc869c75906
