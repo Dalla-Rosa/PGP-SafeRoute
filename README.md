@@ -98,4 +98,4 @@ https://colab.research.google.com/drive/1WwlQfI0iXWQVytxACnqdf2SUvmlSmN63?usp=sh
 Overleaf: https://www.overleaf.com/project/6a7b5f0b6dbb7bc869c75906
 
 ## Site
-SafeRoute: https://pgp-saferoute.onrouter.com/
+SafeRoute: https://pgp-saferoute.onrender.com/
