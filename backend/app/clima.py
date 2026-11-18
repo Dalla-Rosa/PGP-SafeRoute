@@ -7,11 +7,14 @@ fase do dia são features do modelo.
 
 from __future__ import annotations
 
+import logging
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
 import numpy as np
+
+log = logging.getLogger("uvicorn.error")
 
 URL_OPEN_METEO = "https://api.open-meteo.com/v1/forecast"
 MAX_DIAS_PREVISAO = 16
@@ -79,13 +82,18 @@ class ServicoClima:
         faltando = [c for c in dict.fromkeys(chaves) if self._cache.get(c, (0, None))[0] <= agora]
 
         if faltando:
-            dias = min(max((ate.date() - datetime.now().date()).days + 1, 1), MAX_DIAS_PREVISAO)
+            # "Hoje" no fuso da chegada, não no do servidor: em produção o servidor
+            # roda em UTC e, à noite no Brasil, já seria o dia seguinte — a Open-Meteo
+            # (timezone=auto) devolveria um dia a menos. +1 dia de folga cobre pontos
+            # da rota em outro fuso.
+            hoje = datetime.now(ate.tzinfo).date()
+            dias = min(max((ate.date() - hoje).days + 2, 1), MAX_DIAS_PREVISAO)
             try:
                 for chave, previsao in zip(faltando, await self._buscar(cliente, faltando, dias)):
                     self._cache[chave] = (agora + VALIDADE_CACHE_S, previsao)
-            except Exception:
+            except Exception as erro:
                 # Regra 4: sem previsão o fluxo continua, usando "claro" como referência.
-                pass
+                log.warning("Open-Meteo indisponível (%d pontos): %r", len(faltando), erro)
 
         return [self._cache.get(chave, (0, None))[1] for chave in chaves]
 
